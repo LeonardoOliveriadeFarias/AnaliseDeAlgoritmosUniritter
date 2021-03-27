@@ -1,9 +1,6 @@
 package com.company;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.StringTokenizer;
-
 
 
 public class Main {
@@ -30,7 +27,7 @@ public class Main {
     }
 
     public static void coletarDadosTxt() throws IOException{
-        int x;    int y = 10;
+        int x;    int y = 80000;
         int dadosConvertidos[] = new int[y];
         String dados[] = new String[y];
         InputStream input = new FileInputStream("numeros.txt");
@@ -54,8 +51,12 @@ public class Main {
         System.out.println("números ordenados: ");
         //insertionSort(dadosConvertidos);
         //bubbleSort(dadosConvertidos);
+        mergeSort(dadosConvertidos,0, dadosConvertidos.length - 1);
         System.out.println("\n");
-
+        for(int i = 0; i < dadosConvertidos.length; i++){
+            System.out.print(dadosConvertidos[i] + ", ");
+        }
+        System.out.println("\n");
         return;
     }
 
@@ -87,8 +88,51 @@ public class Main {
                 }
             }
         }
+        for(int i = 0; i < vetor.length; i++){
+            System.out.print(vetor[i] + ", ");
+        }
     }
 
+    public static int mergeSort(int[] vetor, int inicio, int fim) {
+        int meio;
+        if (inicio < fim) {
+            meio = (inicio + fim) / 2;
+            mergeSort(vetor, inicio, meio);
+            mergeSort(vetor, meio + 1, fim);
+            intercala(vetor, inicio, meio, fim);
+        }
+        return vetor[fim];
+    }
+
+    public static void intercala(int vetor[], int inicio, int meio, int fim) {
+        int tamEsq = meio - inicio + 1;
+        int tamDir = fim - meio;
+        int esq[] = new int[tamEsq];
+        int dir[] = new int[tamDir];
+        int idxEsq = 0;
+        int idxDir = 0;
+        for (int i = 0; i < tamEsq; i++) {
+            esq[i] = vetor[inicio + i];
+        }
+        for (int j = 0; j < tamDir; j++) {
+            dir[j] = vetor[meio + 1 + j];
+        }
+        for (int k = inicio; k <= fim; k++) {
+            if (idxEsq < tamEsq) {
+                if (idxDir < tamDir) {
+                    if (esq[idxEsq] < dir[idxDir]) {
+                        vetor[k] = esq[idxEsq++];
+                    } else {
+                        vetor[k] = dir[idxDir++];
+                    }
+                } else {
+                    vetor[k] = esq[idxEsq++];
+                }
+            }else{
+                vetor[k] = dir[idxDir++];
+            }
+        }
+    }
 
     public static void main(String[] args) throws IOException {
         //gerarTxt();
