@@ -7,7 +7,7 @@ public class Main {
 
     public static void gerarTxt(){
         try {
-            BufferedWriter out = new BufferedWriter(new FileWriter("numerosHeapSort.txt"));
+            BufferedWriter out = new BufferedWriter(new FileWriter("numeros.txt"));
             int numero[], x;
             x = 100000;
             numero = new int[x];
@@ -27,7 +27,7 @@ public class Main {
     }
 
     public static void coletarDadosTxt() throws IOException{
-        int x;    int y = 20000;
+        int x;    int y = 80000;
         int dadosConvertidos[] = new int[y];
         String dados[] = new String[y];
         InputStream input = new FileInputStream("numerosHeapSort.txt");
@@ -52,7 +52,8 @@ public class Main {
         //insertionSort(dadosConvertidos);
         //bubbleSort(dadosConvertidos);
         //mergeSort(dadosConvertidos,0, dadosConvertidos.length - 1);
-        heapSort(dadosConvertidos);
+        //heapSort(dadosConvertidos);
+        quickSort(dadosConvertidos, 0, dadosConvertidos.length -1);
         System.out.println("\n");
         for(int i = 0; i < dadosConvertidos.length; i++){
             System.out.print(dadosConvertidos[i] + ", ");
@@ -167,6 +168,33 @@ public class Main {
 
             heapify(arr, n, largest);
         }
+    }
+
+    static void quickSort(int[] vetor, int inicio, int fim){
+        if(inicio < fim){
+            int posicaoPivo = separar(vetor, inicio, fim);
+            quickSort(vetor, inicio, posicaoPivo - 1);
+            quickSort(vetor,posicaoPivo + 1, fim);
+        }
+    }
+
+    private static int separar(int[] vetor, int inicio, int fim){
+        int pivo = vetor[inicio];
+        int i = inicio + 1, f = fim;
+        while(i <= f){
+            if(vetor[i] <= pivo){ i++; }
+            else if(pivo < vetor[f]){ f--; }
+            else{
+                int troca = vetor[i];
+                vetor[i] = vetor[f];
+                vetor[f] = troca;
+                i++;
+                f--;
+            }
+        }
+        vetor[inicio] = vetor[f];
+        vetor[f] = pivo;
+        return f;
     }
 
     public static void main(String[] args) throws IOException {
